@@ -1,5 +1,7 @@
 <template>
   <div>
+    <el-page-header @back="goBack" content="Keys详情"> </el-page-header>
+
     <p>Keys from {{ fileName }}</p>
 
     <el-table :data="keys" stripe border>
@@ -47,6 +49,9 @@ export default {
     };
   },
   methods: {
+    goBack() {
+      window.history.go(-1)
+    },
     handleDelete(index, row) {
       this.$confirm("是否确定删除 Key: " + row.key, "确认删除", {
         distinguishCancelAndClose: true,
