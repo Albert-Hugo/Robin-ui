@@ -17,20 +17,24 @@
             ></el-button>
           </el-input>
         </div>
-        <div>
-          搜索结果：{{searchResult}}
-        </div>
+        <div class="search-result">搜索结果：{{ searchResult }}</div>
         <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
+          default-active="1"
           mode="horizontal"
           @select="handleSelect"
           background-color="#000"
         >
           <el-menu-item index="1">存储细节</el-menu-item>
+          <el-menu-item index="2">节点信息</el-menu-item>
         </el-menu>
 
-        <el-table :data="tableData" stripe border @cell-click="cellClick">
+        <el-table
+          v-if="activeIndex === '1'"
+          :data="tableData"
+          stripe
+          border
+          @cell-click="cellClick"
+        >
           <el-table-column
             prop="metadata.segmentFileName"
             label="File Name"
@@ -50,6 +54,19 @@
           <el-table-column prop="metadata.keyEnd" label="Key Range End">
           </el-table-column>
         </el-table>
+
+        <div v-if="activeIndex === '2'">
+          <el-card v-for="o in nodes" :key="o.port + o.host" class="box-card">
+            <div slot="header" class="clearfix">
+              <span>节点：{{ o.host }}</span>
+              <span>节点：{{ o.port }}</span>
+              <span>节点：{{ o.healthy }}</span>
+              <el-button style="float: right; padding: 3px 0" type="text"
+                >操作按钮</el-button
+              >
+            </div>
+          </el-card>
+        </div>
       </el-main>
     </el-container>
   </div>
@@ -70,13 +87,23 @@ export default {
           key: this.searchKey,
         },
         callback: (rsp) => {
-          console.log(rsp);
 
-          this.searchResult = `key:${this.searchKey} value:${rsp.data}` 
+          this.searchResult = `key:${this.searchKey} value:${rsp.data}`;
         },
       });
     },
-    handleSelect() {},
+    handleSelect(key, keyPath) {
+      this.activeIndex = key;
+      
+      if (key == "2") {
+        request.get({
+          url: apis.nodesInfo,
+          callback: (rsp) => {
+            this.nodes = rsp.data;
+          },
+        });
+      }
+    },
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex === 1) {
         return "warning-row";
@@ -92,6 +119,7 @@ export default {
   data() {
     return {
       tableData: [],
+      nodes: [],
       activeIndex: "1",
       searchKey: "",
       searchResult: "",
@@ -115,11 +143,17 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.search-result {
+  margin-bottom: 20px;
+  color: coral;
+}
 .el-table .warning-row {
   background: oldlace;
 }
 
 .el-table .success-row {
   background: #f0f9eb;
+}
+.box-card {
 }
 </style>
