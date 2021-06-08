@@ -1,36 +1,41 @@
 <template>
   <div>
-    <el-page-header @back="goBack" content="Keys详情"> </el-page-header>
+    <el-container>
+      <el-header>Robin DB</el-header>
+      <el-main>
+        <el-page-header @back="goBack" content="Keys详情"> </el-page-header>
 
-    <p>Keys from {{ fileName }}</p>
+        <p>Keys from {{ fileName }}</p>
 
-    <el-table :data="keys" stripe border>
-      <el-table-column prop="key" label="Key Name" />
-      <el-table-column prop="val" label="Value" />
-      <el-table-column
-        prop="expiredTime"
-        empty-text="Never"
-        label="Expire Time "
-      />
-      <el-table-column label="操作">
-        <template slot-scope="scope">
-          <el-button
-            size="mini"
-            type="danger"
-            @click="handleDelete(scope.$index, scope.row)"
-            >删除</el-button
-          >
-        </template>
-      </el-table-column>
-    </el-table>
+        <el-table :data="keys" stripe border>
+          <el-table-column prop="key" label="Key Name" />
+          <el-table-column prop="val" label="Value" />
+          <el-table-column
+            prop="expiredTime"
+            empty-text="Never"
+            label="Expire Time "
+          />
+          <el-table-column label="操作">
+            <template slot-scope="scope">
+              <el-button
+                size="mini"
+                type="danger"
+                @click="handleDelete(scope.$index, scope.row)"
+                >删除</el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
 
-    <el-pagination
-      background
-      layout="prev, pager, next"
-      :total="total"
-      @current-change="changePage"
-    >
-    </el-pagination>
+        <el-pagination
+          background
+          layout="prev, pager, next"
+          :total="total"
+          @current-change="changePage"
+        >
+        </el-pagination>
+      </el-main>
+    </el-container>
   </div>
 </template>
 
@@ -50,7 +55,7 @@ export default {
   },
   methods: {
     goBack() {
-      window.history.go(-1)
+      window.history.go(-1);
     },
     handleDelete(index, row) {
       this.$confirm("是否确定删除 Key: " + row.key, "确认删除", {

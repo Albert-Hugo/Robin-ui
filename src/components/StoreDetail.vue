@@ -2,7 +2,24 @@
   <div>
     <el-container>
       <el-header>Robin DB</el-header>
+
       <el-main>
+        <div style="margin-bottom: 15px">
+          <el-input
+            placeholder="请输入内容"
+            v-model="searchKey"
+            class="input-with-select"
+          >
+            <el-button
+              slot="append"
+              icon="el-icon-search"
+              @click="search"
+            ></el-button>
+          </el-input>
+        </div>
+        <div>
+          搜索结果：{{searchResult}}
+        </div>
         <el-menu
           :default-active="activeIndex"
           class="el-menu-demo"
@@ -44,6 +61,21 @@ import request from "../util/request";
 
 export default {
   methods: {
+    search() {
+      console.log(this.searchKey);
+
+      request.get({
+        url: apis.get,
+        data: {
+          key: this.searchKey,
+        },
+        callback: (rsp) => {
+          console.log(rsp);
+
+          this.searchResult = `key:${this.searchKey} value:${rsp.data}` 
+        },
+      });
+    },
     handleSelect() {},
     tableRowClassName({ row, rowIndex }) {
       if (rowIndex === 1) {
@@ -54,16 +86,15 @@ export default {
       return "";
     },
     cellClick(row, column, cell, event) {
-      // console.log(row.filename)
       this.$router.push("/keys?file=" + row.filename);
-      // this.$router.push({ name: 'Keys', params: { file: row.filename } })
-      // console.log('ss')
     },
   },
   data() {
     return {
       tableData: [],
       activeIndex: "1",
+      searchKey: "",
+      searchResult: "",
     };
   },
   created() {
