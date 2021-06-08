@@ -48,7 +48,7 @@ export default {
     return {
       keys: [],
       fileName: "",
-      page: "0",
+      page: "1",
       pageSize: "10",
       total: 1000,
     };
