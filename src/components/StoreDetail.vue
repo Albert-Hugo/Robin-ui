@@ -112,7 +112,7 @@ export default {
       return "";
     },
     cellClick(row, column, cell, event) {
-      this.$router.push("/keys?file=" + row.filename);
+      this.$router.push(`/keys?file=${row.filename}&keyRangeStart=${row.metadata.keyStart}`);
     },
   },
   data() {
