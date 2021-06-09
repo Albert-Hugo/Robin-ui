@@ -51,6 +51,7 @@ export default {
       page: "1",
       pageSize: "10",
       total: 1000,
+      keyRangeStart: "",
     };
   },
   methods: {
@@ -95,6 +96,7 @@ export default {
           file: this.fileName,
           page: this.page,
           pageSize: this.pageSize,
+          keyRangeStart: this.keyRangeStart,
         },
         callback: (rsp) => {
           this.keys = rsp.data.keys;
@@ -105,7 +107,7 @@ export default {
   },
   created() {
     this.fileName = this.$route.query.file;
-    let keyRangeStart = this.$route.query.keyRangeStart;
+    this.keyRangeStart = this.$route.query.keyRangeStart;
 
     request.get({
       url: apis.fileKeysDetail,
@@ -113,7 +115,7 @@ export default {
         file: this.fileName,
         page: this.page,
         pageSize: this.pageSize,
-        keyRangeStart: keyRangeStart,
+        keyRangeStart: this.keyRangeStart,
       },
       callback: (rsp) => {
         this.keys = rsp.data.keys;
