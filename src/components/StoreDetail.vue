@@ -19,10 +19,11 @@
         </div>
         <div class="search-result">搜索结果：{{ searchResult }}</div>
         <el-menu
+          active-text-color="#E6A23C"
           default-active="1"
           mode="horizontal"
           @select="handleSelect"
-          background-color="#000"
+          background-color="#000000"
         >
           <el-menu-item index="1">存储细节</el-menu-item>
           <el-menu-item index="2">节点信息</el-menu-item>
@@ -87,7 +88,7 @@ export default {
           key: this.searchKey,
         },
         callback: (rsp) => {
-          this.searchResult = `key:${this.searchKey} value:${rsp.data}`;
+          this.searchResult = `${rsp.data}`;
         },
       });
     },
@@ -138,7 +139,7 @@ export default {
         });
         this.tableData.forEach((e) => {
           let mbSize = e.metadata.fileLen / (1024 * 1024);
-          e.metadata.mbSize = mbSize.toFixed(2) + "Mb";
+          e.metadata.mbSize = mbSize.toFixed(4) + "Mb";
         });
       },
     });
@@ -154,15 +155,15 @@ export default {
   font-style: italic;
 }
 .node-class-red {
-  background-color: rgb(211, 8, 8);
+  background-color: #f56c6c;
 }
 .node-class-green {
-  background-color: rgb(95, 223, 56);
+  background-color: #67c23a;
 }
 
 .search-result {
   margin-bottom: 20px;
-  color: coral;
+  color: rgb(0, 0, 0);
 }
 .el-table .warning-row {
   background: oldlace;
@@ -178,6 +179,6 @@ p {
 .box-card {
   display: flex;
 
-  color: rgb(12, 8, 8);
+  color: #303133;
 }
 </style>
