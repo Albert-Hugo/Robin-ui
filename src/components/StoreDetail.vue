@@ -57,13 +57,13 @@
 
         <div v-if="activeIndex === '2'">
           <el-card v-for="o in nodes" :key="o.port + o.host" class="box-card">
-            <div slot="header" class="clearfix">
-              <span>节点：{{ o.host }}</span>
-              <span>节点：{{ o.port }}</span>
-              <span>节点：{{ o.healthy }}</span>
-              <el-button style="float: right; padding: 3px 0" type="text"
-                >操作按钮</el-button
-              >
+            <div
+              slot="header"
+              :class="[o.healthy ? 'node-class-green' : 'node-class-red']"
+            >
+              <p>IP：{{ o.host }}</p>
+              <p>端口：{{ o.port }}</p>
+              <p>Status：{{ o.healthy ? "UP" : "DOWN" }}</p>
             </div>
           </el-card>
         </div>
@@ -112,7 +112,9 @@ export default {
       return "";
     },
     cellClick(row, column, cell, event) {
-      this.$router.push(`/keys?file=${row.filename}&keyRangeStart=${row.metadata.keyStart}`);
+      this.$router.push(
+        `/keys?file=${row.filename}&keyRangeStart=${row.metadata.keyStart}`
+      );
     },
   },
   data() {
@@ -122,6 +124,7 @@ export default {
       activeIndex: "1",
       searchKey: "",
       searchResult: "",
+      nodeClass: "nodeClassRed",
     };
   },
   created() {
@@ -144,7 +147,19 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style  scoped>
+.el-header {
+  font-size: 30px;
+  font-weight: bold;
+  font-style: italic;
+}
+.node-class-red {
+  background-color: rgb(211, 8, 8);
+}
+.node-class-green {
+  background-color: rgb(95, 223, 56);
+}
+
 .search-result {
   margin-bottom: 20px;
   color: coral;
@@ -156,6 +171,13 @@ export default {
 .el-table .success-row {
   background: #f0f9eb;
 }
+p {
+  padding-left: 20px;
+  padding-right: 20px;
+}
 .box-card {
+  display: flex;
+
+  color: rgb(12, 8, 8);
 }
 </style>
