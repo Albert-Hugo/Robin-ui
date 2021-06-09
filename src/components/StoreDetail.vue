@@ -87,14 +87,13 @@ export default {
           key: this.searchKey,
         },
         callback: (rsp) => {
-
           this.searchResult = `key:${this.searchKey} value:${rsp.data}`;
         },
       });
     },
     handleSelect(key, keyPath) {
       this.activeIndex = key;
-      
+
       if (key == "2") {
         request.get({
           url: apis.nodesInfo,
@@ -127,10 +126,13 @@ export default {
   },
   created() {
     console.log("store detail created");
+
     request.get({
       url: apis.state,
       callback: (rsp) => {
-        this.tableData = rsp.data.metas;
+        rsp.data.forEach((e) => {
+          this.tableData = this.tableData.concat(e.metas);
+        });
         this.tableData.forEach((e) => {
           let mbSize = e.metadata.fileLen / (1024 * 1024);
           e.metadata.mbSize = mbSize.toFixed(2) + "Mb";
