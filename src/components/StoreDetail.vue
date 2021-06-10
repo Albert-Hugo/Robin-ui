@@ -114,7 +114,7 @@ export default {
     },
     cellClick(row, column, cell, event) {
       this.$router.push(
-        `/keys?file=${row.filename}&keyRangeStart=${row.metadata.keyStart}`
+        `/keys?file=${row.filename}&keyRangeStart=${row.keyStart}`
       );
     },
   },
