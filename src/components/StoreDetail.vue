@@ -31,28 +31,28 @@
 
         <el-table
           v-if="activeIndex === '1'"
-          :data="tableData"
+          :data="metaDatas"
           stripe
           border
           @cell-click="cellClick"
         >
           <el-table-column
-            prop="metadata.segmentFileName"
+            prop="filename"
             label="File Name"
             width="500"
           >
           </el-table-column>
           <el-table-column
-            prop="metadata.blockListSize"
+            prop="blockListSize"
             label="keys numbers:"
             width="300"
           >
           </el-table-column>
-          <el-table-column prop="metadata.mbSize" label="File Size">
+          <el-table-column prop="fileLen" label="File Size">
           </el-table-column>
-          <el-table-column prop="metadata.keyStart" label="Key Range Start">
+          <el-table-column prop="keyStart" label="Key Range Start">
           </el-table-column>
-          <el-table-column prop="metadata.keyEnd" label="Key Range End">
+          <el-table-column prop="keyEnd" label="Key Range End">
           </el-table-column>
         </el-table>
 
@@ -120,7 +120,7 @@ export default {
   },
   data() {
     return {
-      tableData: [],
+      metaDatas: [],
       nodes: [],
       activeIndex: "1",
       searchKey: "",
@@ -135,11 +135,11 @@ export default {
       url: apis.state,
       callback: (rsp) => {
         rsp.data.forEach((e) => {
-          this.tableData = this.tableData.concat(e.metas);
+          this.metaDatas = this.metaDatas.concat(e.metas);
         });
-        this.tableData.forEach((e) => {
-          let mbSize = e.metadata.fileLen / (1024 * 1024);
-          e.metadata.mbSize = mbSize.toFixed(4) + "Mb";
+        this.metaDatas.forEach((e) => {
+          let mbSize = e.fileLen / (1024 * 1024);
+          e.fileLen = mbSize.toFixed(4) + "Mb";
         });
       },
     });
@@ -148,7 +148,8 @@ export default {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style  scoped>
+<style scoped>
+
 .el-header {
   font-size: 30px;
   font-weight: bold;
@@ -181,4 +182,7 @@ p {
 
   color: #303133;
 }
+
+
+
 </style>
