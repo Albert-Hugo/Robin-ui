@@ -36,11 +36,7 @@
           border
           @cell-click="cellClick"
         >
-          <el-table-column
-            prop="filename"
-            label="File Name"
-            width="500"
-          >
+          <el-table-column prop="filename" label="File Name" width="500">
           </el-table-column>
           <el-table-column
             prop="blockListSize"
@@ -48,15 +44,14 @@
             width="300"
           >
           </el-table-column>
-          <el-table-column prop="fileLen" label="File Size">
-          </el-table-column>
+          <el-table-column prop="fileLen" label="File Size"> </el-table-column>
           <el-table-column prop="keyStart" label="Key Range Start">
           </el-table-column>
           <el-table-column prop="keyEnd" label="Key Range End">
           </el-table-column>
         </el-table>
 
-        <div v-if="activeIndex === '2'">
+        <div v-if="activeIndex === '2'" class="node-detail">
           <el-card v-for="o in nodes" :key="o.port + o.host" class="box-card">
             <div
               slot="header"
@@ -67,8 +62,30 @@
               <p>Status：{{ o.healthy ? "UP" : "DOWN" }}</p>
             </div>
           </el-card>
+          <el-button
+            type="primary"
+            icon="el-icon-circle-plus-outline"
+            class="add-node-btn"
+            @click="addNode"
+            >添加节点</el-button
+          >
         </div>
       </el-main>
+
+      <el-dialog
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        :before-close="handleClose"
+      >
+        <span>这是一段信息</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="dialogVisible = false">取 消</el-button>
+          <el-button type="primary" @click="dialogVisible = false"
+            >确 定</el-button
+          >
+        </span>
+      </el-dialog>
     </el-container>
   </div>
 </template>
@@ -79,6 +96,10 @@ import request from "../util/request";
 
 export default {
   methods: {
+    addNode() {
+      console.log("添加节点");
+      this.dialogVisible = true;
+    },
     search() {
       console.log(this.searchKey);
 
@@ -126,6 +147,7 @@ export default {
       searchKey: "",
       searchResult: "",
       nodeClass: "nodeClassRed",
+      dialogVisible: false,
     };
   },
   created() {
@@ -149,7 +171,6 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 .el-header {
   font-size: 30px;
   font-weight: bold;
@@ -179,10 +200,17 @@ p {
 }
 .box-card {
   display: flex;
-
+  width: 350px;
   color: #303133;
 }
 
+.node-detail {
+  position: relative;
+}
 
-
+.add-node-btn {
+  position: absolute;
+  right: 0;
+  bottom: 50%;
+}
 </style>
