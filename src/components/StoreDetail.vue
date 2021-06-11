@@ -78,13 +78,30 @@
         width="30%"
         :before-close="handleClose"
       >
-        <span>这是一段信息</span>
-        <span slot="footer" class="dialog-footer">
-          <el-button @click="dialogVisible = false">取 消</el-button>
-          <el-button type="primary" @click="dialogVisible = false"
-            >确 定</el-button
-          >
-        </span>
+        <div class="add-node-container">
+          <div class="add-node-input">
+            <span>host :</span
+            ><el-input
+              v-model="addNodeParam.host"
+              placeholder="请输入内容"
+            ></el-input>
+          </div>
+          <div class="add-node-input">
+            <span>port :</span
+            ><el-input
+              v-model="addNodeParam.port"
+              placeholder="请输入内容"
+            ></el-input>
+          </div>
+          <div class="add-node-input">
+            <span>web-port :</span
+            ><el-input
+              v-model="addNodeParam.httpPort"
+              placeholder="请输入内容"
+            ></el-input>
+          </div>
+          <el-button type="primary" @click="addNodeConfirm">确定</el-button>
+        </div>
       </el-dialog>
     </el-container>
   </div>
@@ -96,6 +113,17 @@ import request from "../util/request";
 
 export default {
   methods: {
+    addNodeConfirm() {
+      request.post({
+        url: apis.addNode,
+        data: this.addNodeParam,
+        callback: (rsp) => {
+          console.log(rsp);
+          this.dialogVisible = false;
+          this.$message(rsp.data);
+        },
+      });
+    },
     addNode() {
       console.log("添加节点");
       this.dialogVisible = true;
@@ -148,6 +176,7 @@ export default {
       searchResult: "",
       nodeClass: "nodeClassRed",
       dialogVisible: false,
+      addNodeParam: {},
     };
   },
   created() {
@@ -171,6 +200,14 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.add-node-input {
+  display: flex;
+  margin: 20px;
+}
+.add-node-input span {
+  width: 30%;
+  margin: auto;
+}
 .el-header {
   font-size: 30px;
   font-weight: bold;

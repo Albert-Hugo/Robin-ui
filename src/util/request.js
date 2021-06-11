@@ -12,6 +12,7 @@ function paramToUrl(data){
     return str;
 }
 
+
 function get(config) {
     let str = paramToUrl(config.data);
     
@@ -22,7 +23,7 @@ function get(config) {
         });
 }
 
-function postDelete(config) {
+function post(config) {
     axois
         .post(config.url ,config.data)
         .then((rsp) => {
@@ -33,5 +34,5 @@ function postDelete(config) {
 
 export default {
     "get": get,
-    "postDelete": postDelete,
+    "post": post,
 }
