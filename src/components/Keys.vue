@@ -11,7 +11,7 @@
           <el-table-column prop="key" label="Key Name" />
           <el-table-column prop="val" label="Value" />
           <el-table-column
-            prop="expiredTime"
+            prop="expiredTimeStr"
             empty-text="Never"
             label="Expire Time "
           />
@@ -65,7 +65,7 @@ export default {
         cancelButtonText: "放弃",
       })
         .then(() => {
-          request.postDelete({
+          request.post({
             url: apis.deleleKey,
             data: {
               key: row.key,
@@ -101,6 +101,9 @@ export default {
         callback: (rsp) => {
           this.keys = rsp.data.keys;
           this.total = rsp.data.total;
+          this.keys.forEach(e=>{
+          e.expiredTimeStr = e.expiredTime === -1 ? '永久' : new Date(e.expiredTime).toJSON();
+        })
         },
       });
     },
@@ -119,6 +122,9 @@ export default {
       },
       callback: (rsp) => {
         this.keys = rsp.data.keys;
+        this.keys.forEach(e=>{
+          e.expiredTimeStr = e.expiredTime === -1 ? '永久' : new Date(e.expiredTime).toJSON();
+        })
         this.total = rsp.data.total;
       },
     });
