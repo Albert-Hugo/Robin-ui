@@ -29,6 +29,22 @@
           <el-menu-item index="2">节点信息</el-menu-item>
         </el-menu>
 
+        <div class="node-agrregate">
+          <table>
+            <tr>
+              <th>Host Info</th>
+              <th>Keys</th>
+              <th>Size</th>
+            </tr>
+            <tr></tr>
+            <tr v-for="item in nodesTotal">
+              <td>{{ item.host + ':'+ item.port }}</td>
+              <td>{{ item.keys }}</td>
+              <td>{{ item.size }}</td>
+            </tr>
+          </table>
+        </div>
+
         <el-table
           v-if="activeIndex === '1'"
           :data="metaDatas"
@@ -36,6 +52,10 @@
           border
           @cell-click="cellClick"
         >
+         <el-table-column prop="host" label="Host" sortable >
+          </el-table-column>
+          <el-table-column prop="port" label="Port" >
+          </el-table-column>
           <el-table-column prop="filename" label="File Name" width="500">
           </el-table-column>
           <el-table-column
@@ -170,6 +190,14 @@ export default {
   data() {
     return {
       metaDatas: [],
+      nodesTotal: [
+        {
+          keys: 100,
+          host: "localhost",
+          port: 8888,
+          size: "0.122mb",
+        },
+      ],
       nodes: [],
       activeIndex: "1",
       searchKey: "",
@@ -200,6 +228,12 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.node-agrregate{
+  margin: 20px;
+}
+.node-agrregate table{
+  margin: auto;
+}
 .add-node-input {
   display: flex;
   margin: 20px;
