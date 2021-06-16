@@ -209,7 +209,15 @@ export default {
       url: apis.state,
       callback: (rsp) => {
         rsp.data.forEach((e) => {
-          this.metaDatas = this.metaDatas.concat(e.state.metas);
+          e.state.metas.host = e.host;
+          e.state.metas.port = e.port;
+          let meta = e.state.metas;
+          meta.forEach((mt) => {
+            mt.port = e.port;
+            mt.host = e.host;
+          });
+
+          this.metaDatas = this.metaDatas.concat(meta);
         });
         this.metaDatas.forEach((e) => {
           let mbSize = e.fileLen / (1024 * 1024);
