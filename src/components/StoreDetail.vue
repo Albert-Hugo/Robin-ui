@@ -35,12 +35,16 @@
               <th>Host Info</th>
               <th>Keys</th>
               <th>Size</th>
+              <th>File Number</th>
             </tr>
             <tr></tr>
             <tr v-for="item in nodesTotal">
-              <td>{{ item.host + ':'+ item.port }}</td>
-              <td>{{ item.keys }}</td>
-              <td>{{ item.size }}</td>
+              <td>{{ item.host + ":" + item.port }}</td>
+              <td>{{ item.state.keyCount }}</td>
+              <td>
+                {{ (item.state.dataSize / (1024 * 1024)).toFixed(4) + "mb" }}
+              </td>
+              <td>{{ item.state.fileCount }}</td>
             </tr>
           </table>
         </div>
@@ -52,10 +56,8 @@
           border
           @cell-click="cellClick"
         >
-         <el-table-column prop="host" label="Host" sortable >
-          </el-table-column>
-          <el-table-column prop="port" label="Port" >
-          </el-table-column>
+          <el-table-column prop="host" label="Host" sortable> </el-table-column>
+          <el-table-column prop="port" label="Port"> </el-table-column>
           <el-table-column prop="filename" label="File Name" width="500">
           </el-table-column>
           <el-table-column
@@ -190,14 +192,7 @@ export default {
   data() {
     return {
       metaDatas: [],
-      nodesTotal: [
-        {
-          keys: 100,
-          host: "localhost",
-          port: 8888,
-          size: "0.122mb",
-        },
-      ],
+      nodesTotal: [],
       nodes: [],
       activeIndex: "1",
       searchKey: "",
@@ -214,12 +209,14 @@ export default {
       url: apis.state,
       callback: (rsp) => {
         rsp.data.forEach((e) => {
-          this.metaDatas = this.metaDatas.concat(e.metas);
+          this.metaDatas = this.metaDatas.concat(e.state.metas);
         });
         this.metaDatas.forEach((e) => {
           let mbSize = e.fileLen / (1024 * 1024);
           e.fileLen = mbSize.toFixed(4) + "Mb";
         });
+
+        this.nodesTotal = rsp.data;
       },
     });
   },
@@ -228,10 +225,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.node-agrregate{
+.node-agrregate {
   margin: 20px;
 }
-.node-agrregate table{
+.node-agrregate table {
   margin: auto;
 }
 .add-node-input {
