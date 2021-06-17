@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-container>
-      <el-header>Robin DB</el-header>
+      <el-header>Robin DB Manager</el-header>
 
       <el-main>
         <div style="margin-bottom: 15px">
@@ -63,7 +63,7 @@
           <el-table-column
             prop="blockListSize"
             label="keys numbers:"
-            width="300"
+            width="100"
           >
           </el-table-column>
           <el-table-column prop="fileLen" label="File Size"> </el-table-column>
@@ -94,12 +94,7 @@
         </div>
       </el-main>
 
-      <el-dialog
-        title="提示"
-        :visible.sync="dialogVisible"
-        width="30%"
-        :before-close="handleClose"
-      >
+      <el-dialog title="提示" :visible.sync="dialogVisible" width="30%">
         <div class="add-node-container">
           <div class="add-node-input">
             <span>host :</span
@@ -286,7 +281,7 @@ p {
 
 .add-node-btn {
   position: absolute;
-  right: 0;
+  right: 20px;
   bottom: 50%;
 }
 </style>

@@ -1,7 +1,6 @@
 <template>
   <div>
     <el-container>
-      <el-header>Robin DB</el-header>
       <el-main>
         <el-page-header @back="goBack" content="Keys详情"> </el-page-header>
 
@@ -23,9 +22,33 @@
                 @click="handleDelete(scope.$index, scope.row)"
                 >删除</el-button
               >
+              <el-button
+                size="mini"
+                type="primary"
+                icon="el-icon-edit"
+                @click="dialogVisible = true"
+                >修改</el-button
+              >
             </template>
           </el-table-column>
         </el-table>
+
+        <el-dialog
+          title="提示"
+          v-model="dialogVisible"
+          width="30%"
+          :before-close="handleClose"
+        >
+          <span>这是一段信息</span>
+          <template #footer>
+            <span class="dialog-footer">
+              <el-button @click="dialogVisible = false">取 消</el-button>
+              <el-button type="primary" @click="dialogVisible = false"
+                >确 定</el-button
+              >
+            </span>
+          </template>
+        </el-dialog>
 
         <el-pagination
           background
@@ -47,6 +70,7 @@ export default {
   data() {
     return {
       keys: [],
+      dialogVisible: false,
       fileName: "",
       page: "1",
       pageSize: "10",
@@ -58,6 +82,14 @@ export default {
     goBack() {
       window.history.go(-1);
     },
+    handleUpdate(index, row) {
+      console.log("update");
+      this.dialogVisible = true;
+    },
+    handleClose(index, row) {
+      console.log("handleClose");
+    },
+
     handleDelete(index, row) {
       this.$confirm("是否确定删除 Key: " + row.key, "确认删除", {
         distinguishCancelAndClose: true,
@@ -101,9 +133,10 @@ export default {
         callback: (rsp) => {
           this.keys = rsp.data.keys;
           this.total = rsp.data.total;
-          this.keys.forEach(e=>{
-          e.expiredTimeStr = e.expiredTime === -1 ? '永久' : new Date(e.expiredTime).toJSON();
-        })
+          this.keys.forEach((e) => {
+            e.expiredTimeStr =
+              e.expiredTime === -1 ? "永久" : new Date(e.expiredTime).toJSON();
+          });
         },
       });
     },
@@ -122,9 +155,10 @@ export default {
       },
       callback: (rsp) => {
         this.keys = rsp.data.keys;
-        this.keys.forEach(e=>{
-          e.expiredTimeStr = e.expiredTime === -1 ? '永久' : new Date(e.expiredTime).toJSON();
-        })
+        this.keys.forEach((e) => {
+          e.expiredTimeStr =
+            e.expiredTime === -1 ? "永久" : new Date(e.expiredTime).toJSON();
+        });
         this.total = rsp.data.total;
       },
     });
